@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { checkValidData } from "../utils/validate";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrormessage] = useState(null);
+  const email = useRef(null);
+  const password = useRef(null);
+
   const toggleSignUpForm = () => {
     setIsSignInForm(!isSignInForm);
+  };
+
+  const handleButtonClick = (e) => {
+    const message = checkValidData(email.current.value, password.current.value);
+    setErrormessage(message);
   };
 
   return (
@@ -17,6 +27,7 @@ const Login = () => {
         />
       </div>
       <form
+        onSubmit={(e) => e.preventDefault()}
         action=""
         className="absolute rounded-lg text-white p-12 w-3/12 bg-black mt-40 mx-auto left-0 right-0 bg-opacity-80"
       >
@@ -24,6 +35,7 @@ const Login = () => {
           {isSignInForm ? "Sign in" : "Sign up"}
         </h2>
         <input
+          ref={email}
           type="email"
           placeholder="Email Address"
           className="p-2 my-4 w-full  bg-zinc-800 rounded-lg"
@@ -36,11 +48,17 @@ const Login = () => {
           />
         )}
         <input
+          ref={password}
           type="password"
           placeholder="Password"
           className="p-2 my-4 w-full bg-zinc-800 rounded-lg"
         />
-        <button className="p-4 mt-8 bg-red-600 w-full rounded-lg">
+
+        <p className="text-red-700 text-xs">{errorMessage}</p>
+        <button
+          className="p-4 mt-8 bg-red-600 w-full rounded-lg"
+          onClick={() => handleButtonClick()}
+        >
           {isSignInForm ? "Sign in" : "Sign up"}
         </button>
         <div className="text-xs flex mt-2 space-x-4 px-1 justify-between text-zinc-500">
@@ -53,13 +71,13 @@ const Login = () => {
           </span>
         </div>
         <p className="py-6  text-zinc-400">
-          {!isSignInForm ? "New to CinemAi?" : "Already Registered?"}
+          {isSignInForm ? "New to CinemAi?" : "Already Registered?"}
           <span
             className="text-white hover:underline cursor-pointer"
             onClick={() => toggleSignUpForm()}
           >
             {" "}
-            {!isSignInForm ? "Sign up now." : "Sign in"}
+            {isSignInForm ? "Sign up now." : "Sign in"}
           </span>
         </p>
       </form>
