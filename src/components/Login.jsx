@@ -1,12 +1,27 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/slices/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
-  const [errorMessage, setErrormessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const email = useRef(null);
   const password = useRef(null);
+  const name = useRef(null);
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const toggleSignUpForm = () => {
     setIsSignInForm(!isSignInForm);
@@ -14,7 +29,57 @@ const Login = () => {
 
   const handleButtonClick = (e) => {
     const message = checkValidData(email.current.value, password.current.value);
-    setErrormessage(message);
+    setErrorMessage(message);
+
+    if (message) return;
+
+    if (!isSignInForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+          })
+            .then(() => {
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(
+                addUser({ uid: uid, email: email, displayName: displayName })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
+          console.log(user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const theErrorMessage = error.message;
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          console.log(user);
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErroMessage("The user not found: Error message: " + errorMessage);
+        });
+    }
   };
 
   return (
@@ -38,10 +103,12 @@ const Login = () => {
           ref={email}
           type="email"
           placeholder="Email Address"
+          autoComplete="username"
           className="p-2 my-4 w-full  bg-zinc-800 rounded-lg"
         />
         {!isSignInForm && (
           <input
+            ref={name}
             type="text"
             placeholder="Name"
             className="p-2 my-4 w-full  bg-zinc-800 rounded-lg"
@@ -51,6 +118,7 @@ const Login = () => {
           ref={password}
           type="password"
           placeholder="Password"
+          autoComplete="current-password"
           className="p-2 my-4 w-full bg-zinc-800 rounded-lg"
         />
 
@@ -71,12 +139,11 @@ const Login = () => {
           </span>
         </div>
         <p className="py-6  text-zinc-400">
-          {isSignInForm ? "New to CinemAi?" : "Already Registered?"}
+          {isSignInForm ? "New to CinemAi? " : "Already Registered? "}
           <span
             className="text-white hover:underline cursor-pointer"
             onClick={() => toggleSignUpForm()}
           >
-            {" "}
             {isSignInForm ? "Sign up now." : "Sign in"}
           </span>
         </p>
