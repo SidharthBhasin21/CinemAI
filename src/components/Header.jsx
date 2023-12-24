@@ -20,12 +20,13 @@ const Header = () => {
         // An error happened.
       });
   };
-  console.log(user);
+  // console.log(user);
+
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, email, displayName } = user;
-        console.log(email);
+        // console.log(email);
         dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
         navigate("/browse");
       } else {
@@ -33,13 +34,14 @@ const Header = () => {
         navigate("/");
       }
     });
+    return () => unsubscribe();
   }, []);
 
   return (
     <div className="absolute px-8 py-6 bg-gradient-to-b from-black w-full z-10 flex justify-between items-baseline">
       <span className="text-red-600 text-4xl w-40 font-bold m-5">CinemAi</span>
       {user && (
-        <div className="flex p-2">
+        <div className="flex p-2 gap-3">
           <div className="">
             <img
               className="w-12 h-12"
@@ -48,7 +50,12 @@ const Header = () => {
             />
             <p>{user.displayName}</p>
           </div>
-          <button onClick={handleSignOut}>Sign out</button>
+          <button
+            onClick={handleSignOut}
+            className="bg-red-600 p-3 rounded-md  text-white"
+          >
+            Sign out
+          </button>
         </div>
       )}
     </div>
