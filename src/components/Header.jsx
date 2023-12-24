@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { removeUser } from "../utils/slices/userSlice";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { addUser, removeUser } from "../utils/slices/userSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -21,6 +21,20 @@ const Header = () => {
       });
   };
   console.log(user);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, email, displayName } = user;
+        console.log(email);
+        dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
+        navigate("/browse");
+      } else {
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
+  }, []);
+
   return (
     <div className="absolute px-8 py-6 bg-gradient-to-b from-black w-full z-10 flex justify-between items-baseline">
       <span className="text-red-600 text-4xl w-40 font-bold m-5">CinemAi</span>
