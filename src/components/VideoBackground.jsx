@@ -22,15 +22,15 @@ const VideoBackground = (props) => {
         src={
           "https://www.youtube.com/embed/" +
           trailerVideo?.key +
-          "?&autoplay=1" +
+          "?autoplay=1&showinfo=0&controls=0" +
           mute
         }
         title="YouTube video player"
-        allow=" autoplay;  encrypted-media; picture-in-picture; web-share"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       />
       <button
         onClick={() => handleMute()}
-        className="absolute text-black rounded-full p-4  bg-white right-[10%] bottom-[28%] bg-opacity-80"
+        className="absolute text-black rounded-full p-4  bg-white right-[10%] bottom-[28%] bg-opacity-80 hover:bg-opacity-100"
       >
         {mute !== "&mute=1" ? "🔈" : "🔇"}
       </button>

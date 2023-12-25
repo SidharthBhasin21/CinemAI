@@ -6,15 +6,12 @@ import VideoTitle from "./VideoTitle";
 const MainContainer = () => {
   const movies = useSelector((store) => store.movies?.nowPlayingMovies);
   function getRandomNumber() {
-    var randomNumber = Math.random();
-
-    var scaledNumber = Math.floor(randomNumber * 20);
-
-    return scaledNumber;
+    return Math.floor(Math.random() * 20);
   }
+  const idx = getRandomNumber();
   if (!movies) return;
 
-  const mainMovie = movies[getRandomNumber()];
+  const mainMovie = movies[idx];
 
   const { id, original_title, overview, poster_path } = mainMovie;
   return (
