@@ -5,11 +5,13 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../utils/slices/userSlice";
 import { PROFILE_IMG_URL } from "../utils/constants";
+import { toggleGptSearchView } from "../utils/slices/gptSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  const showGptSearch = useSelector(store => store.gpt.showGptSearch)
 
   const handleSignOut = () => {
     signOut(auth)
@@ -21,7 +23,9 @@ const Header = () => {
         // An error happened.
       });
   };
-  // console.log(user);
+  const handleGptSearch = () => {
+    dispatch(toggleGptSearchView())
+  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -43,6 +47,7 @@ const Header = () => {
       <span className="text-red-600 text-4xl w-40 font-bold m-5">CinemAi</span>
       {user && (
         <div className="flex p-2 gap-3">
+        <button onClick={handleGptSearch} className="bg-green-900 p-3 rounded-md text-white">{ showGptSearch ? "Home" : "GPT Search"}</button>
           <div className="">
             <img
               className="w-12 h-12"
@@ -53,7 +58,7 @@ const Header = () => {
           </div>
           <button
             onClick={handleSignOut}
-            className="bg-red-600 p-3 rounded-md  text-white"
+            className="bg-red-600 p-3 rounded-md text-white"
           >
             Sign out
           </button>

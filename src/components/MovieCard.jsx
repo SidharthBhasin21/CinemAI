@@ -2,8 +2,10 @@ import React from "react";
 import { IMG_CDN } from "../utils/constants";
 
 const MovieCard = ({ posterPath, name }) => {
+
+  if (!posterPath)return null;
   return (
-    <div className="w-48 ">
+    <div className="w-48 transition ease-in-out hover:scale-125">
       <img className="rounded-md" src={IMG_CDN + posterPath} alt={name} />
     </div>
   );

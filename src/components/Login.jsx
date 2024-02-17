@@ -81,7 +81,7 @@ const Login = () => {
     <div className="bg-black">
       <Header />
       <div className="absolute">
-        <img src={LOGIN_BG_URL} alt="background-img" />
+        <img src={LOGIN_BG_URL} alt="background-img" className="w-screen" />
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
