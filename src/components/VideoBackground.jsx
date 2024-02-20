@@ -30,7 +30,7 @@ const VideoBackground = (props) => {
       />
       <button
         onClick={() => handleMute()}
-        className="absolute text-black rounded-full p-4  bg-white right-[10%] bottom-[28%] bg-opacity-80 hover:bg-opacity-100"
+        className="absolute text-black rounded-full text-center p-1 md:p-3 text:xs md:text-lg right-5 bottom-[65%] bg-white/50 md:right-[10%] md:bottom-[40%] bg-opacity-80 hover:bg-opacity-100"
       >
         {mute !== "&mute=1" ? "🔈" : "🔇"}
       </button>

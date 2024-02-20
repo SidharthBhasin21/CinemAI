@@ -5,7 +5,7 @@ const MovieCard = ({ posterPath, name }) => {
 
   if (!posterPath)return null;
   return (
-    <div className="w-48 transition ease-in-out hover:scale-125">
+    <div className="w-36 md:w-48 transition ease-in-out">
       <img className="rounded-md" src={IMG_CDN + posterPath} alt={name} />
     </div>
   );

@@ -31,7 +31,7 @@ const GptSearchBar = () => {
   }
   const searchMovies = async (movie) => {
      
-    const url = 'https://api.themoviedb.org/3/search/movie?query='+movie+'&include_adult=true&language=en-US&page=1';
+    const url = 'https://api.themoviedb.org/3/search/movie?query='+movie+'&include_adult=false &language=en-US&page=1';
     
 
     const data = await fetch(url, API_OPTIONS)
@@ -44,15 +44,15 @@ const GptSearchBar = () => {
 
 
   return (
-    <div className='pt-[10%] flex justify-center '>
-        <form className='w-1/2 p-6 grid grid-cols-12 bg-black/50 shadow-black shadow-xl  rounded-2xl' onSubmit={(e) => e.preventDefault()}>
+    <div className='pt-[50%] md:pt-[20%] flex justify-center '>
+        <form className='w-full md:w-1/2 mx-3 md:mx-0 md:p-6 grid grid-cols-12 bg-black/50 shadow-black shadow-xl  rounded-2xl' onSubmit={(e) => e.preventDefault()}>
             <input type="text" 
                 ref={input}
                 placeholder="What Would you like to watch?" 
-                className="p-4 m-4 col-span-9 rounded-md  shadow-black  focus:outline-none"
+                className="md:p-4 md:m-4 m-3 p-2 col-span-9 rounded-md text-sm md:text-lg shadow-black  focus:outline-none"
             />
             <button 
-              className='bg-red-600 px-4 py-2 m-4 border-red-900  col-span-3 rounded-md text-white shadow-black shadow-lg hover:outline outline-red-500'
+              className='bg-red-600 px-4 py-2 my-3 mx-2 md:m-4 border-red-900  col-span-3 rounded-md text-white shadow-black shadow-lg hover:outline outline-red-500'
               onClick={()=> handleGptSearchClick()}
             > Search </button>
         </form>
