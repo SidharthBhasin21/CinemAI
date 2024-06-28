@@ -1,7 +1,7 @@
 # CinemAI
 
 ## Description
-CinemAI is a project that aims to revolutionize the movie industry by leveraging artificial intelligence to enhance the movie-watching experience. It utilizes advanced algorithms and machine learning techniques to provide personalized movie recommendations, analyze user preferences, and generate insightful movie reviews.
+This is a movie recommendation app. with UI inspired from Netflix. This app suggests movies based on your prompt using GPT API.
 
 ## Features
 - Personalized movie recommendations based on user preferences
